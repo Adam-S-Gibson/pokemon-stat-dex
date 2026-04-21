@@ -19,14 +19,14 @@ export interface Pokemon {
   pokemonSprite: Sprites;
 }
 
-interface PokemonStat {
+export interface PokemonStat {
   base_stat: number;
   pokemonStat: {
     name: string;
   };
 }
 
-interface PokemonType {
+export interface PokemonType {
   pokemonType: {
     name: string;
   };
@@ -84,15 +84,26 @@ export interface ISprites {
     official_artwork: string;
     [key: string]: string;
   };
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 export interface IPokemon {
-  pokemonSprite: ISprites[];
-  [key: string]: any;
+  pokemonSprite: { sprites: ISprites }[];
+  pokemon_species_id: number;
+  id: number;
+  name: string;
+  pokemonStats: PokemonStat[];
+  pokemonTypes: PokemonType[];
 }
 
 export interface IForm {
   form_name: string;
   pokemonInfo: IPokemon;
+}
+
+export interface FetchPokemonResponse {
+  data: {
+    pokemon: { forms: IForm[] };
+    pokemonCount: { aggregate: { count: number } };
+  };
 }

@@ -3,22 +3,22 @@ import { AlternativeForms } from "@/components/AlternativeForms";
 import { PokemonTitleCard } from "@/components/PokemonTitleCard";
 import { StatsCard } from "@/components/StatsCard";
 import {
+  FetchPokemonResponse,
   IForm,
   IPokemon,
   ISprites,
   Pokemon,
-  PokemonFormAggregateResponse,
 } from "@/types/pokemonDataTypes";
 import { PokemonContext } from "@/Providers/PokemonProvider";
 
 export const ContentArea = () => {
   const [pokemon, setPokemon] = useState<Pokemon | undefined>(undefined);
   const [pokemonAltForms, setPokemonAltForms] = useState<Pokemon[] | undefined>(
-    undefined
+    undefined,
   );
-  const [pokemonCount, setPokemonCount] = useState<
-    PokemonFormAggregateResponse | undefined
-  >(undefined);
+  const [pokemonCount, setPokemonCount] = useState<number | undefined>(
+    undefined,
+  );
   const { setMax, currentPokemon } = useContext(PokemonContext);
 
   const PLACEHOLDER_IMAGE = "https://placehold.co/400";
@@ -89,7 +89,7 @@ export const ContentArea = () => {
 
   const createUpdatedPokemon = (
     fetchedPokemon: IPokemon,
-    updatedSprites: ISprites
+    updatedSprites: ISprites,
   ) => {
     return {
       ...fetchedPokemon,
@@ -104,8 +104,8 @@ export const ContentArea = () => {
 
   const createFetchedPokemonAltForms = (forms: IForm[]) => {
     return forms
-      .filter((form: { form_name: string }) => form.form_name !== "")
-      .map((form: { pokemonInfo: any; form_name: string }) => {
+      .filter((form) => form.form_name !== "")
+      .map((form) => {
         const pokemonInfo = form.pokemonInfo;
         const spritesJson = pokemonInfo.pokemonSprite[0].sprites;
         const updatedSprites = createUpdatedSprites(spritesJson);
@@ -118,16 +118,18 @@ export const ContentArea = () => {
       });
   };
 
-  const handleFetchDataResponse = (response: any) => {
+  const handleFetchDataResponse = (
+    response: FetchPokemonResponse | undefined,
+  ) => {
     if (response && response.data.pokemon.forms.length > 0) {
       const fetchedPokemonForm = response.data.pokemon.forms[0];
       const fetchedPokemon = fetchedPokemonForm.pokemonInfo;
       setMax(response.data.pokemonCount.aggregate.count);
 
       const fetchedPokemonAltForms = createFetchedPokemonAltForms(
-        response.data.pokemon.forms
+        response.data.pokemon.forms,
       );
-      setPokemonAltForms(fetchedPokemonAltForms);
+      setPokemonAltForms(fetchedPokemonAltForms as unknown as Pokemon[]);
 
       if (pokemonCount === undefined) {
         setPokemonCount(response.data.pokemonCount.aggregate.count);
@@ -138,7 +140,7 @@ export const ContentArea = () => {
         const updatedSprites = createUpdatedSprites(spritesJson);
         const updatedPokemon = createUpdatedPokemon(
           fetchedPokemon,
-          updatedSprites
+          updatedSprites,
         );
 
         setPokemon(updatedPokemon as unknown as Pokemon);
@@ -150,11 +152,12 @@ export const ContentArea = () => {
     fetchData(currentPokemon)
       .then(handleFetchDataResponse)
       .catch(console.error);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPokemon]);
 
   return (
-    <div className="w-full max-w-screen-lg">
-      <main className="flex flex-col md:flex-row flex-grow gap-2">
+    <div className="w-full max-w-5xl">
+      <main className="flex flex-col md:flex-row grow gap-2">
         <div className="md:w-1/2 md:p-2">
           <PokemonTitleCard
             imageSrc={

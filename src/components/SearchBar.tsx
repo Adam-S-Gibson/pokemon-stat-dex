@@ -1,4 +1,4 @@
-import { SVGProps, useContext, useEffect, useState } from "react";
+import { JSX, SVGProps, useContext, useEffect, useState } from "react";
 import { PokemonContext } from "@/Providers/PokemonProvider";
 import { Button } from "@/components/ui/button";
 import {
@@ -7,6 +7,7 @@ import {
   CommandGroup,
   CommandInput,
   CommandItem,
+  CommandList,
 } from "@/components/ui/command";
 import {
   Popover,
@@ -18,11 +19,11 @@ export const NavigationBar = () => {
   const { currentPokemon, setCurrentPokemon, max } = useContext(PokemonContext);
 
   return (
-    <div className="p-2 w-full max-w-screen-lg">
+    <div className="p-2 w-full max-w-5xl">
       <div className="flex items-center justify-between bg-white rounded-md shadow-md">
         <img
           alt="Website logo"
-          className="h-16 w-16 mr-2 top-2 left-2"
+          className="h-16 w-16 mr-2 top-2 left-2 cursor-pointer"
           src="https://upload.wikimedia.org/wikipedia/commons/5/53/Pok%C3%A9_Ball_icon.svg"
           onClick={() => setCurrentPokemon(1)}
         />
@@ -140,16 +141,17 @@ export function SearchBar() {
         const pokedexEntries = entries.map(
           (entry: { pokemon_species_id: number; name: string }) => {
             return {
-              value: entry.pokemon_species_id,
+              value: entry.pokemon_species_id.toString(),
               label: formatName(entry.name),
             };
-          }
+          },
         );
         setSearchList(pokedexEntries);
       })
       .catch((err) => {
         console.error("Failed to fetch data:", err);
       });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [max]);
 
   return (
@@ -159,29 +161,34 @@ export function SearchBar() {
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="w-full"
+          className="w-full cursor-pointer"
         >
           {"Select Pokemon..."}
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-full sm:w-96 max-h-96 p-0 overflow-y-scroll mx-auto">
+      <PopoverContent
+        className="w-(--radix-popover-trigger-width) sm:w-96 p-0"
+        onOpenAutoFocus={(e) => e.preventDefault()}
+      >
         <Command>
           <CommandInput placeholder="Search Pokemon..." />
-          <CommandEmpty>No pokemon found.</CommandEmpty>
-          <CommandGroup>
-            {searchList.map((pokemon) => (
-              <CommandItem
-                key={pokemon.value}
-                value={pokemon.value}
-                onSelect={() => {
-                  setOpen(false);
-                  setCurrentPokemon(parseInt(pokemon.value));
-                }}
-              >
-                {pokemon.label}
-              </CommandItem>
-            ))}
-          </CommandGroup>
+          <CommandList>
+            <CommandEmpty>No pokemon found.</CommandEmpty>
+            <CommandGroup>
+              {searchList.map((pokemon) => (
+                <CommandItem
+                  key={pokemon.value}
+                  value={pokemon.label}
+                  onSelect={() => {
+                    setOpen(false);
+                    setCurrentPokemon(parseInt(pokemon.value));
+                  }}
+                >
+                  {pokemon.label}
+                </CommandItem>
+              ))}
+            </CommandGroup>
+          </CommandList>
         </Command>
       </PopoverContent>
     </Popover>
