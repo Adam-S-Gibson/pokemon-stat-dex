@@ -1,4 +1,4 @@
-import { NavigationBar } from "@/components/SearchBar";
+import { NavigationBar } from "@/components/NavigationBar";
 import { ContentArea } from "@/components/ContentArea";
 
 export const Main = () => {

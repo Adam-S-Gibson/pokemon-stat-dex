@@ -6,14 +6,13 @@ interface StatsCardProps {
   pokemon?: Pokemon;
 }
 
-const formatStatName = (name: string): string => {
-  return name
+const formatStatName = (name: string): string =>
+  name
     .split("-")
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(" ");
-};
 
-export const StatsCard: React.FC<StatsCardProps> = ({ pokemon }) => {
+export const StatsCard = ({ pokemon }: StatsCardProps) => {
   const stats = pokemon?.pokemonStats.map((stat) => ({
     name: formatStatName(stat.pokemonStat.name),
     value: stat.base_stat,
@@ -28,8 +27,8 @@ export const StatsCard: React.FC<StatsCardProps> = ({ pokemon }) => {
       </CardHeader>
       <CardContent>
         <ul className="space-y-1 md:space-y-2">
-          {stats?.map((stat, index) => (
-            <li key={index} className="flex justify-between">
+          {stats?.map((stat) => (
+            <li key={stat.name} className="flex justify-between">
               <span>{stat.name}:</span>
               <Badge>{stat.value}</Badge>
             </li>
