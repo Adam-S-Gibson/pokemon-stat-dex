@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { AlternativeForms } from "@/components/AlternativeForms";
+import { MovesCard } from "@/components/MovesCard";
 import { PokemonTitleCard } from "@/components/PokemonTitleCard";
 import { StatsCard } from "@/components/StatsCard";
 import { fetchGraphQL, POKEMON_QUERY } from "@/lib/pokeapi";
@@ -27,6 +28,7 @@ const normalizePokemon = (form: PokemonForm): Pokemon => {
     formName: form_name,
     pokemonStats: pokemonInfo.pokemonStats,
     pokemonTypes: pokemonInfo.pokemonTypes,
+    pokemonMoves: pokemonInfo.pokemonMoves ?? [],
     officialArtwork: artwork,
   };
 };
@@ -83,6 +85,9 @@ export const ContentArea = () => {
           }))}
         />
       </aside>
+      <section className="mt-4">
+        <MovesCard moves={pokemon?.pokemonMoves ?? []} />
+      </section>
     </div>
   );
 };

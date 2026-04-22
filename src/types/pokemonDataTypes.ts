@@ -7,6 +7,22 @@ export interface PokemonType {
   pokemonType: { name: string };
 }
 
+export interface PokemonMoveDetails {
+  name: string;
+  power: number | null;
+  accuracy: number | null;
+  pp: number | null;
+  moveType: { name: string };
+  damageClass: { name: string } | null;
+}
+
+export interface PokemonMove {
+  level: number;
+  moveLearnMethod: { name: string };
+  versionGroup: { name: string };
+  move: PokemonMoveDetails;
+}
+
 export interface Pokemon {
   pokemon_species_id: number;
   id: number;
@@ -14,6 +30,7 @@ export interface Pokemon {
   formName?: string;
   pokemonStats: PokemonStat[];
   pokemonTypes: PokemonType[];
+  pokemonMoves: PokemonMove[];
   officialArtwork: string | null;
 }
 
@@ -35,6 +52,7 @@ export interface PokemonForm {
     pokemonStats: PokemonStat[];
     pokemonTypes: PokemonType[];
     pokemonSprite: Array<{ sprites: RawSprites }>;
+    pokemonMoves: PokemonMove[];
   };
 }
 

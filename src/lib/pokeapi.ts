@@ -40,6 +40,21 @@ export const POKEMON_QUERY = `query pokemonById($pokemonId: Int!) {
           pokemonType: pokemon_v2_type { name }
         }
         pokemonSprite: pokemon_v2_pokemonsprites { sprites }
+        pokemonMoves: pokemon_v2_pokemonmoves(
+          order_by: [{level: asc}, {move_id: asc}]
+        ) {
+          level
+          moveLearnMethod: pokemon_v2_movelearnmethod { name }
+          versionGroup: pokemon_v2_versiongroup { name }
+          move: pokemon_v2_move {
+            name
+            power
+            accuracy
+            pp
+            moveType: pokemon_v2_type { name }
+            damageClass: pokemon_v2_movedamageclass { name }
+          }
+        }
       }
     }
   }
