@@ -58,24 +58,32 @@ export const SpritesByGenerationCard = ({
               {generationLabel(gen.generation)}
             </h3>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
-              {gen.games.map((game) => (
-                <figure
-                  key={game.gameKey}
-                  className="flex flex-col items-center justify-center p-3 bg-[var(--color-gb-off)] border-2 border-[var(--color-gb-ink)]"
-                >
-                  <img
-                    src={game.url}
-                    alt={`${displayName} sprite from ${formatGameLabel(game.gameKey)}`}
-                    width={96}
-                    height={96}
-                    loading="lazy"
-                    className="h-20 w-20 object-contain"
-                  />
-                  <figcaption className="text-sm mt-2 text-center text-[var(--color-gb-shadow)]">
-                    {formatGameLabel(game.gameKey)}
-                  </figcaption>
-                </figure>
-              ))}
+              {gen.games.map((game) => {
+                const blendOutWhite = gen.generation <= 2;
+                return (
+                  <figure
+                    key={game.gameKey}
+                    className="flex flex-col items-center justify-center p-3 bg-[var(--color-gb-off)] border-2 border-[var(--color-gb-ink)]"
+                  >
+                    <img
+                      src={game.url}
+                      alt={`${displayName} sprite from ${formatGameLabel(game.gameKey)}`}
+                      width={96}
+                      height={96}
+                      loading="lazy"
+                      className="h-20 w-20 object-contain"
+                      style={
+                        blendOutWhite
+                          ? { mixBlendMode: "multiply" }
+                          : undefined
+                      }
+                    />
+                    <figcaption className="text-sm mt-2 text-center text-[var(--color-gb-shadow)]">
+                      {formatGameLabel(game.gameKey)}
+                    </figcaption>
+                  </figure>
+                );
+              })}
             </div>
           </section>
         ))}
