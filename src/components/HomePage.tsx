@@ -1,6 +1,7 @@
 import { useContext, useEffect, useMemo, useState } from "react";
 import { Link } from "react-router";
 import { fetchGraphQL, GENERATIONS_QUERY } from "@/lib/pokeapi";
+import { generationLabel } from "@/lib/generations";
 import { pixelSpriteUrl } from "@/lib/sprites";
 import { formatName } from "@/lib/utils";
 import { PokemonContext } from "@/Providers/PokemonProvider";
@@ -19,20 +20,6 @@ interface Generation {
 interface GenerationsResponse {
   generations: Generation[];
 }
-
-const REGION_NAMES: Record<number, string> = {
-  1: "Kanto",
-  2: "Johto",
-  3: "Hoenn",
-  4: "Sinnoh",
-  5: "Unova",
-  6: "Kalos",
-  7: "Alola",
-  8: "Galar",
-  9: "Paldea",
-};
-
-const ROMAN = ["", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX"];
 
 const padId = (id: number) => String(id).padStart(4, "0");
 
@@ -81,7 +68,6 @@ export const HomePage = () => {
       >
         {generations.map((gen) => {
           const isActive = gen.id === selectedGen;
-          const region = REGION_NAMES[gen.id] ?? formatName(gen.name);
           return (
             <button
               key={gen.id}
@@ -95,7 +81,7 @@ export const HomePage = () => {
                   : "bg-white text-slate-800 border-slate-300 hover:bg-slate-200",
               ].join(" ")}
             >
-              Gen {ROMAN[gen.id] ?? gen.id} · {region}
+              {generationLabel(gen.id)}
             </button>
           );
         })}

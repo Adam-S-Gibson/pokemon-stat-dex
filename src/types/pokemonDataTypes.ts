@@ -23,6 +23,17 @@ export interface PokemonMove {
   move: PokemonMoveDetails;
 }
 
+export interface GameSprite {
+  gameKey: string;
+  url: string;
+}
+
+export interface GenerationSprites {
+  generation: number;
+  generationKey: string;
+  games: GameSprite[];
+}
+
 export interface Pokemon {
   pokemon_species_id: number;
   id: number;
@@ -32,15 +43,21 @@ export interface Pokemon {
   pokemonTypes: PokemonType[];
   pokemonMoves: PokemonMove[];
   officialArtwork: string | null;
+  spriteGenerations: GenerationSprites[];
 }
 
-interface RawSprites {
+interface RawSpriteGame {
+  front_default?: string | null;
+}
+
+export interface RawSprites {
   other: {
     "official-artwork": {
       front_default: string | null;
       front_shiny: string | null;
     };
   };
+  versions?: Record<string, Record<string, RawSpriteGame | null | undefined>>;
 }
 
 export interface PokemonForm {

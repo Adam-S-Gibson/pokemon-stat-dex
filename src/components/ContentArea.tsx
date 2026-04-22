@@ -3,12 +3,16 @@ import { useParams } from "react-router";
 import { AlternativeForms } from "@/components/AlternativeForms";
 import { MovesCard } from "@/components/MovesCard";
 import { PokemonTitleCard } from "@/components/PokemonTitleCard";
+import { SpritesByGenerationCard } from "@/components/SpritesByGenerationCard";
 import { StatsCard } from "@/components/StatsCard";
 import { fetchGraphQL, POKEMON_QUERY } from "@/lib/pokeapi";
+import { parseGenerationKey } from "@/lib/generations";
 import {
+  GenerationSprites,
   Pokemon,
   PokemonForm,
   PokemonResponse,
+  RawSprites,
 } from "@/types/pokemonDataTypes";
 import { PokemonContext } from "@/Providers/PokemonProvider";
 
@@ -16,11 +20,30 @@ const PLACEHOLDER_IMAGE = "https://placehold.co/400";
 const typeIconUrl = (name: string) =>
   `https://serebii.net/pokedex-bw/type/${name}.gif`;
 
+const extractSpriteGenerations = (
+  sprites: RawSprites | undefined,
+): GenerationSprites[] => {
+  if (!sprites?.versions) return [];
+  return Object.entries(sprites.versions)
+    .map(([generationKey, games]) => ({
+      generationKey,
+      generation: parseGenerationKey(generationKey),
+      games: Object.entries(games ?? {})
+        .map(([gameKey, game]) => ({
+          gameKey,
+          url: game?.front_default ?? null,
+        }))
+        .filter((g): g is { gameKey: string; url: string } => g.url !== null),
+    }))
+    .filter((entry) => entry.games.length > 0)
+    .sort((a, b) => a.generation - b.generation);
+};
+
 const normalizePokemon = (form: PokemonForm): Pokemon => {
   const { pokemonInfo, form_name } = form;
+  const rawSprites = pokemonInfo.pokemonSprite[0]?.sprites;
   const artwork =
-    pokemonInfo.pokemonSprite[0]?.sprites.other["official-artwork"]
-      .front_default ?? null;
+    rawSprites?.other["official-artwork"].front_default ?? null;
   return {
     pokemon_species_id: pokemonInfo.pokemon_species_id,
     id: pokemonInfo.id,
@@ -30,6 +53,7 @@ const normalizePokemon = (form: PokemonForm): Pokemon => {
     pokemonTypes: pokemonInfo.pokemonTypes,
     pokemonMoves: pokemonInfo.pokemonMoves ?? [],
     officialArtwork: artwork,
+    spriteGenerations: extractSpriteGenerations(rawSprites),
   };
 };
 
@@ -85,6 +109,12 @@ export const ContentArea = () => {
           }))}
         />
       </aside>
+      <section className="mt-4">
+        <SpritesByGenerationCard
+          generations={pokemon?.spriteGenerations ?? []}
+          pokemonName={pokemon?.name}
+        />
+      </section>
       <section className="mt-4">
         <MovesCard moves={pokemon?.pokemonMoves ?? []} />
       </section>
