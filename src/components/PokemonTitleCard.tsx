@@ -25,7 +25,7 @@ export const PokemonTitleCard = ({
 
   return (
     <Card className="h-full flex flex-col items-center justify-center p-6">
-      <div className="w-3/4 aspect-square flex items-center justify-center bg-[var(--color-gb-screen-light)] border-2 border-[var(--color-gb-ink)]">
+      <div className="w-3/4 aspect-square flex items-center justify-center bg-(--color-gb-screen-light) border-2 border-(--color-gb-ink)">
         <img
           alt={displayName}
           className="object-contain w-full h-full p-4"

@@ -39,14 +39,14 @@ export const StatsCard = ({ pokemon }: StatsCardProps) => {
                   <span className="tabular-nums text-lg">{stat.value}</span>
                 </div>
                 <div
-                  className="h-3 w-full border-2 border-[var(--color-gb-ink)] bg-[var(--color-gb-off)]"
+                  className="h-3 w-full border-2 border-(--color-gb-ink) bg-(--color-gb-off)"
                   role="meter"
                   aria-valuenow={stat.value}
                   aria-valuemin={0}
                   aria-valuemax={MAX_STAT}
                 >
                   <div
-                    className="h-full bg-[var(--color-gb-ink)]"
+                    className="h-full bg-(--color-gb-ink)"
                     style={{ width: `${pct}%` }}
                   />
                 </div>
@@ -54,7 +54,7 @@ export const StatsCard = ({ pokemon }: StatsCardProps) => {
             );
           })}
           {total !== undefined && (
-            <li className="flex justify-between items-baseline pt-2 border-t-2 border-dashed border-[var(--color-gb-ink)]">
+            <li className="flex justify-between items-baseline pt-2 border-t-2 border-dashed border-(--color-gb-ink)">
               <span className="font-pixel text-[0.65rem] uppercase">Total</span>
               <span className="tabular-nums text-xl font-pixel">{total}</span>
             </li>

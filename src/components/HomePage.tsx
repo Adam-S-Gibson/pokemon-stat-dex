@@ -58,7 +58,7 @@ export const HomePage = () => {
           National
           <br className="md:hidden" /> Pokédex
         </h1>
-        <p className="mt-3 text-lg text-[var(--color-gb-shadow)]">
+        <p className="mt-3 text-lg text-(--color-gb-shadow)">
           Pick a generation, choose a Pokémon.
         </p>
       </header>
@@ -91,7 +91,7 @@ export const HomePage = () => {
           <Link
             key={species.id}
             to={`/pokemon/${species.id}`}
-            className="pixel-panel-flat group flex flex-col items-center p-2 transition-transform duration-200 hover:-translate-y-1 hover:scale-110 hover:shadow-[4px_4px_0_var(--color-gb-ink)] hover:z-10 focus:outline-none focus:ring-2 focus:ring-[var(--color-gb-ink)]"
+            className="pixel-panel-flat group flex flex-col items-center p-2 transition-transform duration-200 hover:-translate-y-1 hover:scale-110 hover:shadow-[4px_4px_0_var(--color-gb-ink)] hover:z-10 focus:outline-none focus:ring-2 focus:ring-(--color-gb-ink)"
           >
             <img
               src={pixelSpriteUrl(species.id)}
@@ -101,10 +101,10 @@ export const HomePage = () => {
               loading="lazy"
               className="h-20 w-20 object-contain"
             />
-            <span className="font-pixel text-[0.55rem] mt-1 text-[var(--color-gb-shadow)]">
+            <span className="font-pixel text-[0.55rem] mt-1 text-(--color-gb-shadow)">
               #{padId(species.id)}
             </span>
-            <span className="text-base text-[var(--color-gb-ink)] truncate max-w-full">
+            <span className="text-base text-(--color-gb-ink) truncate max-w-full">
               {formatName(species.name)}
             </span>
           </Link>

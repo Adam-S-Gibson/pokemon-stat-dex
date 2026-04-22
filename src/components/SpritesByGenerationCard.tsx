@@ -54,7 +54,7 @@ export const SpritesByGenerationCard = ({
       <CardContent className="space-y-6">
         {generations.map((gen) => (
           <section key={gen.generationKey}>
-            <h3 className="font-pixel text-[0.65rem] uppercase tracking-wide mb-3 text-[var(--color-gb-shadow)]">
+            <h3 className="font-pixel text-[0.65rem] uppercase tracking-wide mb-3 text-(--color-gb-shadow)">
               {generationLabel(gen.generation)}
             </h3>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
@@ -63,7 +63,7 @@ export const SpritesByGenerationCard = ({
                 return (
                   <figure
                     key={game.gameKey}
-                    className="flex flex-col items-center justify-center p-3 bg-[var(--color-gb-off)] border-2 border-[var(--color-gb-ink)]"
+                    className="flex flex-col items-center justify-center p-3 bg-(--color-gb-off) border-2 border-(--color-gb-ink)"
                   >
                     <img
                       src={game.url}
@@ -73,12 +73,10 @@ export const SpritesByGenerationCard = ({
                       loading="lazy"
                       className="h-20 w-20 object-contain"
                       style={
-                        blendOutWhite
-                          ? { mixBlendMode: "multiply" }
-                          : undefined
+                        blendOutWhite ? { mixBlendMode: "multiply" } : undefined
                       }
                     />
-                    <figcaption className="text-sm mt-2 text-center text-[var(--color-gb-shadow)]">
+                    <figcaption className="text-sm mt-2 text-center text-(--color-gb-shadow)">
                       {formatGameLabel(game.gameKey)}
                     </figcaption>
                   </figure>

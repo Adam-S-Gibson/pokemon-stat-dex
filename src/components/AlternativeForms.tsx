@@ -28,7 +28,7 @@ export const AlternativeForms = ({ images = [] }: AlternativeFormsProps) => {
         {images.map((image) => (
           <div
             key={image.imageAltText ?? image.imageUrl}
-            className="flex flex-col items-center p-2 bg-[var(--color-gb-off)] border-2 border-[var(--color-gb-ink)]"
+            className="flex flex-col items-center p-2 bg-(--color-gb-off) border-2 border-(--color-gb-ink)"
           >
             <img
               alt={image.imageAltText}
@@ -38,7 +38,7 @@ export const AlternativeForms = ({ images = [] }: AlternativeFormsProps) => {
               width="200"
               height="200"
             />
-            <p className="text-center mt-2 text-[var(--color-gb-shadow)]">
+            <p className="text-center mt-2 text-(--color-gb-shadow)">
               {image.imageAltText}
             </p>
           </div>

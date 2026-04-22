@@ -41,9 +41,7 @@ const formatMoveName = (name: string): string =>
     .map((word) => formatName(word))
     .join(" ");
 
-const groupMoves = (
-  moves: PokemonMove[],
-): Record<string, GroupedMove[]> => {
+const groupMoves = (moves: PokemonMove[]): Record<string, GroupedMove[]> => {
   const byMethod: Record<string, Map<string, GroupedMove>> = {};
 
   for (const entry of moves) {
@@ -130,7 +128,7 @@ export const MovesCard = ({ moves }: MovesCardProps) => {
                     aria-selected={isActive}
                     aria-pressed={isActive}
                     onClick={() => setActiveMethod(method)}
-                    className="pixel-button !text-[0.55rem]"
+                    className="pixel-button text-[0.55rem]!"
                   >
                     {formatMethodLabel(method)}
                     <span className="ml-1.5 opacity-75">
@@ -141,9 +139,9 @@ export const MovesCard = ({ moves }: MovesCardProps) => {
               })}
             </div>
 
-            <div className="overflow-x-auto border-2 border-[var(--color-gb-ink)]">
+            <div className="overflow-x-auto border-2 border-(--color-gb-ink)">
               <table className="w-full text-base">
-                <thead className="bg-[var(--color-gb-ink)] text-[var(--color-gb-off)] font-pixel text-[0.55rem] uppercase">
+                <thead className="bg-(--color-gb-ink) text-(--color-gb-off) font-pixel text-[0.55rem] uppercase">
                   <tr>
                     {showLevelColumn && (
                       <th className="px-2 py-2 text-left">Lv.</th>
@@ -162,8 +160,8 @@ export const MovesCard = ({ moves }: MovesCardProps) => {
                       key={move.key}
                       className={
                         idx % 2 === 0
-                          ? "bg-[var(--color-gb-off)]"
-                          : "bg-[var(--color-gb-screen-light)]"
+                          ? "bg-(--color-gb-off)"
+                          : "bg-(--color-gb-screen-light)"
                       }
                     >
                       {showLevelColumn && (
@@ -178,7 +176,8 @@ export const MovesCard = ({ moves }: MovesCardProps) => {
                         <TypeChip type={move.type} />
                       </td>
                       <td className="px-2 py-1.5">
-                        {DAMAGE_CLASS_LABEL[move.damageClass] ?? move.damageClass}
+                        {DAMAGE_CLASS_LABEL[move.damageClass] ??
+                          move.damageClass}
                       </td>
                       <td className="px-2 py-1.5 tabular-nums text-right">
                         {move.power ?? "—"}

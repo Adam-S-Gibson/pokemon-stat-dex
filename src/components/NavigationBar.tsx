@@ -19,13 +19,9 @@ export const NavigationBar = () => {
           type="button"
           onClick={() => navigate("/")}
           aria-label="Back to Pokédex home"
-          className="shrink-0 p-1 border-2 border-[var(--color-gb-ink)] bg-[var(--color-gb-off)] cursor-pointer hover:translate-y-[1px] transition-transform"
+          className="shrink-0 p-1 border-2 border-(--color-gb-ink) bg-(--color-gb-off) cursor-pointer hover:translate-y-px transition-transform"
         >
-          <img
-            alt=""
-            className="h-10 w-10"
-            src={POKEBALL_LOGO}
-          />
+          <img alt="" className="h-10 w-10" src={POKEBALL_LOGO} />
         </button>
         <NavButton
           direction="left"
@@ -62,7 +58,7 @@ const NavButton = ({
 }: NavButtonProps) => (
   <button
     type="button"
-    className="pixel-button !px-2 !py-2"
+    className="pixel-button px-2! py-2!"
     disabled={disabled}
     aria-label={ariaLabel}
     onClick={onClick}
