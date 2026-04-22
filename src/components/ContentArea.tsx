@@ -1,4 +1,5 @@
 import { useContext, useEffect, useState } from "react";
+import { useParams } from "react-router";
 import { AlternativeForms } from "@/components/AlternativeForms";
 import { PokemonTitleCard } from "@/components/PokemonTitleCard";
 import { StatsCard } from "@/components/StatsCard";
@@ -31,7 +32,9 @@ const normalizePokemon = (form: PokemonForm): Pokemon => {
 };
 
 export const ContentArea = () => {
-  const { setMax, currentPokemon } = useContext(PokemonContext);
+  const { setMax } = useContext(PokemonContext);
+  const { id } = useParams<{ id: string }>();
+  const currentPokemon = Number(id) || 1;
   const [pokemon, setPokemon] = useState<Pokemon>();
   const [altForms, setAltForms] = useState<Pokemon[]>([]);
 

@@ -1,4 +1,5 @@
 import { useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router";
 import { PokemonContext } from "@/Providers/PokemonProvider";
 import { Button } from "@/components/ui/button";
 import {
@@ -29,7 +30,8 @@ interface PokemonListResponse {
 export const SearchBar = () => {
   const [open, setOpen] = useState(false);
   const [entries, setEntries] = useState<PokemonEntry[]>([]);
-  const { max, setCurrentPokemon } = useContext(PokemonContext);
+  const { max } = useContext(PokemonContext);
+  const navigate = useNavigate();
 
   useEffect(() => {
     let cancelled = false;
@@ -76,7 +78,7 @@ export const SearchBar = () => {
                   value={entry.label}
                   onSelect={() => {
                     setOpen(false);
-                    setCurrentPokemon(entry.value);
+                    navigate(`/pokemon/${entry.value}`);
                   }}
                 >
                   {entry.label}

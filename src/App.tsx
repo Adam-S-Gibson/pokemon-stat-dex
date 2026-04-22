@@ -1,17 +1,19 @@
-import { Main } from "@/components/AppContainer";
+import { Route, Routes } from "react-router";
+import { DetailPage } from "@/components/DetailPage";
+import { HomePage } from "@/components/HomePage";
 import { PokemonContext } from "@/Providers/PokemonProvider";
 import "@/index.css";
 import { useState } from "react";
 
 function App() {
-  const [currentPokemon, setCurrentPokemon] = useState<number>(1);
   const [max, setMax] = useState<number>(1000);
 
   return (
-    <PokemonContext.Provider
-      value={{ currentPokemon, setCurrentPokemon, max, setMax }}
-    >
-      <Main />
+    <PokemonContext.Provider value={{ max, setMax }}>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/pokemon/:id" element={<DetailPage />} />
+      </Routes>
     </PokemonContext.Provider>
   );
 }

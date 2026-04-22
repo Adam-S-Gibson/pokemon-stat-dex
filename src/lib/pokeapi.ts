@@ -54,3 +54,14 @@ export const POKEMON_LIST_QUERY = `query pokemonList($limit: Int!) {
     pokemon_species_id
   }
 }`;
+
+export const GENERATIONS_QUERY = `query generationsGrid {
+  generations: pokemon_v2_generation(order_by: {id: asc}) {
+    id
+    name
+    species: pokemon_v2_pokemonspecies(order_by: {id: asc}) {
+      id
+      name
+    }
+  }
+}`;

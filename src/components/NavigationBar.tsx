@@ -1,4 +1,5 @@
 import { SVGProps, useContext } from "react";
+import { useNavigate, useParams } from "react-router";
 import { PokemonContext } from "@/Providers/PokemonProvider";
 import { SearchBar } from "@/components/SearchBar";
 
@@ -6,29 +7,32 @@ const POKEBALL_LOGO =
   "https://upload.wikimedia.org/wikipedia/commons/5/53/Pok%C3%A9_Ball_icon.svg";
 
 export const NavigationBar = () => {
-  const { currentPokemon, setCurrentPokemon, max } = useContext(PokemonContext);
+  const { max } = useContext(PokemonContext);
+  const navigate = useNavigate();
+  const { id } = useParams<{ id: string }>();
+  const currentPokemon = Number(id) || 1;
 
   return (
     <div className="p-2 w-full max-w-5xl">
       <div className="flex items-center justify-between bg-white rounded-md shadow-md">
         <img
-          alt="Reset to first Pokemon"
+          alt="Back to Pokédex home"
           className="h-16 w-16 mr-2 cursor-pointer"
           src={POKEBALL_LOGO}
-          onClick={() => setCurrentPokemon(1)}
+          onClick={() => navigate("/")}
         />
         <NavButton
           direction="left"
           ariaLabel="Previous Pokemon"
           disabled={currentPokemon <= 1}
-          onClick={() => setCurrentPokemon(currentPokemon - 1)}
+          onClick={() => navigate(`/pokemon/${currentPokemon - 1}`)}
         />
         <SearchBar />
         <NavButton
           direction="right"
           ariaLabel="Next Pokemon"
           disabled={currentPokemon >= max}
-          onClick={() => setCurrentPokemon(currentPokemon + 1)}
+          onClick={() => navigate(`/pokemon/${currentPokemon + 1}`)}
         />
       </div>
     </div>
