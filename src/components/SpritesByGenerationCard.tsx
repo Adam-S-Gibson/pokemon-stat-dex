@@ -47,19 +47,21 @@ export const SpritesByGenerationCard = ({
   return (
     <Card>
       <CardHeader>
-        <h2 className="text-xl md:text-2xl font-bold">Sprites by Generation</h2>
+        <h2 className="font-pixel text-base md:text-lg">
+          Sprites by Generation
+        </h2>
       </CardHeader>
       <CardContent className="space-y-6">
         {generations.map((gen) => (
           <section key={gen.generationKey}>
-            <h3 className="text-sm font-semibold uppercase tracking-wide text-slate-500 mb-3">
+            <h3 className="font-pixel text-[0.65rem] uppercase tracking-wide mb-3 text-[var(--color-gb-shadow)]">
               {generationLabel(gen.generation)}
             </h3>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
               {gen.games.map((game) => (
                 <figure
                   key={game.gameKey}
-                  className="flex flex-col items-center justify-center p-3 bg-slate-50 border border-slate-200 rounded-md"
+                  className="flex flex-col items-center justify-center p-3 bg-[var(--color-gb-off)] border-2 border-[var(--color-gb-ink)]"
                 >
                   <img
                     src={game.url}
@@ -68,9 +70,8 @@ export const SpritesByGenerationCard = ({
                     height={96}
                     loading="lazy"
                     className="h-20 w-20 object-contain"
-                    style={{ imageRendering: "pixelated" }}
                   />
-                  <figcaption className="text-xs text-slate-600 mt-2 text-center">
+                  <figcaption className="text-sm mt-2 text-center text-[var(--color-gb-shadow)]">
                     {formatGameLabel(game.gameKey)}
                   </figcaption>
                 </figure>

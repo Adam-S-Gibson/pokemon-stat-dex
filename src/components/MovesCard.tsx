@@ -128,11 +128,11 @@ export const MovesCard = ({ moves }: MovesCardProps) => {
   return (
     <Card>
       <CardHeader>
-        <h2 className="text-xl md:text-2xl font-bold">Moves</h2>
+        <h2 className="font-pixel text-base md:text-lg">Moves</h2>
       </CardHeader>
       <CardContent>
         {methods.length === 0 ? (
-          <p className="text-slate-600">No moves found.</p>
+          <p className="text-base">No moves found.</p>
         ) : (
           <>
             <div
@@ -145,18 +145,15 @@ export const MovesCard = ({ moves }: MovesCardProps) => {
                 return (
                   <button
                     key={method}
+                    type="button"
                     role="tab"
                     aria-selected={isActive}
+                    aria-pressed={isActive}
                     onClick={() => setActiveMethod(method)}
-                    className={[
-                      "px-3 py-1.5 rounded-md border text-sm font-medium cursor-pointer transition",
-                      isActive
-                        ? "bg-slate-900 text-white border-slate-900"
-                        : "bg-white text-slate-800 border-slate-300 hover:bg-slate-100",
-                    ].join(" ")}
+                    className="pixel-button !text-[0.55rem]"
                   >
                     {formatMethodLabel(method)}
-                    <span className="ml-1.5 text-xs opacity-75">
+                    <span className="ml-1.5 opacity-75">
                       ({grouped[method].length})
                     </span>
                   </button>
@@ -164,55 +161,59 @@ export const MovesCard = ({ moves }: MovesCardProps) => {
               })}
             </div>
 
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm">
-                <thead className="text-left text-slate-500 border-b border-slate-200">
+            <div className="overflow-x-auto border-2 border-[var(--color-gb-ink)]">
+              <table className="w-full text-base">
+                <thead className="bg-[var(--color-gb-ink)] text-[var(--color-gb-off)] font-pixel text-[0.55rem] uppercase">
                   <tr>
                     {showLevelColumn && (
-                      <th className="px-2 py-1 font-medium">Lv.</th>
+                      <th className="px-2 py-2 text-left">Lv.</th>
                     )}
-                    <th className="px-2 py-1 font-medium">Move</th>
-                    <th className="px-2 py-1 font-medium">Type</th>
-                    <th className="px-2 py-1 font-medium">Category</th>
-                    <th className="px-2 py-1 font-medium text-right">Pow.</th>
-                    <th className="px-2 py-1 font-medium text-right">Acc.</th>
-                    <th className="px-2 py-1 font-medium text-right">PP</th>
+                    <th className="px-2 py-2 text-left">Move</th>
+                    <th className="px-2 py-2 text-left">Type</th>
+                    <th className="px-2 py-2 text-left">Cat.</th>
+                    <th className="px-2 py-2 text-right">Pow.</th>
+                    <th className="px-2 py-2 text-right">Acc.</th>
+                    <th className="px-2 py-2 text-right">PP</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {currentMoves.map((move) => (
+                  {currentMoves.map((move, idx) => (
                     <tr
                       key={move.key}
-                      className="border-b border-slate-100 last:border-0"
+                      className={
+                        idx % 2 === 0
+                          ? "bg-[var(--color-gb-off)]"
+                          : "bg-[var(--color-gb-screen-light)]"
+                      }
                     >
                       {showLevelColumn && (
-                        <td className="px-2 py-1.5 tabular-nums text-slate-700">
+                        <td className="px-2 py-1.5 tabular-nums">
                           {move.level > 0 ? move.level : "—"}
                         </td>
                       )}
-                      <td className="px-2 py-1.5 font-medium text-slate-900">
+                      <td className="px-2 py-1.5 font-semibold">
                         {formatMoveName(move.name)}
                       </td>
                       <td className="px-2 py-1.5">
                         <span
                           className={[
-                            "inline-block px-2 py-0.5 rounded text-xs font-semibold uppercase tracking-wide",
-                            TYPE_COLORS[move.type] ?? "bg-slate-300 text-slate-900",
+                            "inline-block px-2 py-0.5 border-2 border-[var(--color-gb-ink)] font-pixel text-[0.5rem] uppercase tracking-wide",
+                            TYPE_COLORS[move.type] ?? "bg-[var(--color-gb-screen-light)] text-[var(--color-gb-ink)]",
                           ].join(" ")}
                         >
                           {move.type}
                         </span>
                       </td>
-                      <td className="px-2 py-1.5 text-slate-700">
+                      <td className="px-2 py-1.5">
                         {DAMAGE_CLASS_LABEL[move.damageClass] ?? move.damageClass}
                       </td>
-                      <td className="px-2 py-1.5 tabular-nums text-right text-slate-700">
+                      <td className="px-2 py-1.5 tabular-nums text-right">
                         {move.power ?? "—"}
                       </td>
-                      <td className="px-2 py-1.5 tabular-nums text-right text-slate-700">
+                      <td className="px-2 py-1.5 tabular-nums text-right">
                         {move.accuracy ?? "—"}
                       </td>
-                      <td className="px-2 py-1.5 tabular-nums text-right text-slate-700">
+                      <td className="px-2 py-1.5 tabular-nums text-right">
                         {move.pp ?? "—"}
                       </td>
                     </tr>

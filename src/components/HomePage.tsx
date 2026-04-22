@@ -52,34 +52,30 @@ export const HomePage = () => {
   );
 
   return (
-    <div className="min-h-screen flex flex-col items-center bg-slate-100 py-8 px-4">
-      <header className="w-full max-w-6xl mb-6 text-center">
-        <h1 className="text-3xl md:text-5xl font-bold tracking-tight">
-          National Pokédex
+    <div className="min-h-screen flex flex-col items-center py-8 px-4">
+      <header className="w-full max-w-6xl mb-8 text-center">
+        <h1 className="font-pixel text-xl md:text-3xl leading-tight">
+          National
+          <br className="md:hidden" /> Pokédex
         </h1>
-        <p className="text-slate-600 mt-2">
-          Pick a generation, then choose a Pokémon.
+        <p className="mt-3 text-lg text-[var(--color-gb-shadow)]">
+          Pick a generation, choose a Pokémon.
         </p>
       </header>
 
       <nav
         aria-label="Generations"
-        className="w-full max-w-6xl flex flex-wrap justify-center gap-2 mb-6"
+        className="w-full max-w-6xl flex flex-wrap justify-center gap-3 mb-8"
       >
         {generations.map((gen) => {
           const isActive = gen.id === selectedGen;
           return (
             <button
               key={gen.id}
+              type="button"
               onClick={() => setSelectedGen(gen.id)}
               aria-pressed={isActive}
-              className={[
-                "px-4 py-2 rounded-md border shadow-sm transition",
-                "text-sm md:text-base font-medium cursor-pointer",
-                isActive
-                  ? "bg-slate-900 text-white border-slate-900"
-                  : "bg-white text-slate-800 border-slate-300 hover:bg-slate-200",
-              ].join(" ")}
+              className="pixel-button"
             >
               {generationLabel(gen.id)}
             </button>
@@ -95,7 +91,7 @@ export const HomePage = () => {
           <Link
             key={species.id}
             to={`/pokemon/${species.id}`}
-            className="group flex flex-col items-center p-2 bg-white rounded-lg border border-slate-200 shadow-sm transition-transform duration-200 hover:-translate-y-1 hover:scale-110 hover:shadow-md hover:z-10 focus:outline-none focus:ring-2 focus:ring-slate-900"
+            className="pixel-panel-flat group flex flex-col items-center p-2 transition-transform duration-200 hover:-translate-y-1 hover:scale-110 hover:shadow-[4px_4px_0_var(--color-gb-ink)] hover:z-10 focus:outline-none focus:ring-2 focus:ring-[var(--color-gb-ink)]"
           >
             <img
               src={pixelSpriteUrl(species.id)}
@@ -104,12 +100,11 @@ export const HomePage = () => {
               height={96}
               loading="lazy"
               className="h-20 w-20 object-contain"
-              style={{ imageRendering: "pixelated" }}
             />
-            <span className="text-xs text-slate-500 mt-1">
+            <span className="font-pixel text-[0.55rem] mt-1 text-[var(--color-gb-shadow)]">
               #{padId(species.id)}
             </span>
-            <span className="text-sm font-medium text-slate-800">
+            <span className="text-base text-[var(--color-gb-ink)] truncate max-w-full">
               {formatName(species.name)}
             </span>
           </Link>

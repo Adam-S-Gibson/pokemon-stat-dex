@@ -101,7 +101,7 @@ export const ContentArea = () => {
           <StatsCard pokemon={pokemon} />
         </div>
       </main>
-      <aside className="p-4 bg-white mt-4">
+      <aside className="mt-4">
         <AlternativeForms
           images={altForms.map((form) => ({
             imageUrl: form.officialArtwork ?? PLACEHOLDER_IMAGE,
@@ -109,6 +109,7 @@ export const ContentArea = () => {
           }))}
         />
       </aside>
+      <hr className="pixel-divider my-4" />
       <section className="mt-4">
         <SpritesByGenerationCard
           generations={pokemon?.spriteGenerations ?? []}

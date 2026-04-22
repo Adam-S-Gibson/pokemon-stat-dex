@@ -14,20 +14,28 @@ export const NavigationBar = () => {
 
   return (
     <div className="p-2 w-full max-w-5xl">
-      <div className="flex items-center justify-between bg-white rounded-md shadow-md">
-        <img
-          alt="Back to Pokédex home"
-          className="h-16 w-16 mr-2 cursor-pointer"
-          src={POKEBALL_LOGO}
+      <div className="pixel-panel flex items-center justify-between gap-2 p-2">
+        <button
+          type="button"
           onClick={() => navigate("/")}
-        />
+          aria-label="Back to Pokédex home"
+          className="shrink-0 p-1 border-2 border-[var(--color-gb-ink)] bg-[var(--color-gb-off)] cursor-pointer hover:translate-y-[1px] transition-transform"
+        >
+          <img
+            alt=""
+            className="h-10 w-10"
+            src={POKEBALL_LOGO}
+          />
+        </button>
         <NavButton
           direction="left"
           ariaLabel="Previous Pokemon"
           disabled={currentPokemon <= 1}
           onClick={() => navigate(`/pokemon/${currentPokemon - 1}`)}
         />
-        <SearchBar />
+        <div className="flex-1 min-w-0">
+          <SearchBar />
+        </div>
         <NavButton
           direction="right"
           ariaLabel="Next Pokemon"
@@ -53,7 +61,8 @@ const NavButton = ({
   onClick,
 }: NavButtonProps) => (
   <button
-    className="p-2 mx-2 transition ease-in-out hover:scale-150 duration-300 rounded-full"
+    type="button"
+    className="pixel-button !px-2 !py-2"
     disabled={disabled}
     aria-label={ariaLabel}
     onClick={onClick}
@@ -75,9 +84,9 @@ const ArrowIcon = ({ direction, ...props }: ArrowIconProps) => (
     viewBox="0 0 24 24"
     fill="none"
     stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
+    strokeWidth="3"
+    strokeLinecap="square"
+    strokeLinejoin="miter"
   >
     {direction === "left" ? (
       <>
