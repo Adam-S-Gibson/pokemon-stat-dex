@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { TypeChip } from "@/components/TypeChip";
 import { PokemonMove } from "@/types/pokemonDataTypes";
 import { formatName } from "@/lib/utils";
 
@@ -82,27 +83,6 @@ const groupMoves = (
     result[method] = list;
   }
   return result;
-};
-
-const TYPE_COLORS: Record<string, string> = {
-  normal: "bg-gray-400 text-white",
-  fire: "bg-orange-500 text-white",
-  water: "bg-blue-500 text-white",
-  electric: "bg-yellow-400 text-slate-900",
-  grass: "bg-green-500 text-white",
-  ice: "bg-cyan-300 text-slate-900",
-  fighting: "bg-red-700 text-white",
-  poison: "bg-purple-600 text-white",
-  ground: "bg-amber-600 text-white",
-  flying: "bg-indigo-300 text-slate-900",
-  psychic: "bg-pink-500 text-white",
-  bug: "bg-lime-500 text-white",
-  rock: "bg-yellow-700 text-white",
-  ghost: "bg-indigo-700 text-white",
-  dragon: "bg-indigo-500 text-white",
-  dark: "bg-gray-800 text-white",
-  steel: "bg-slate-400 text-white",
-  fairy: "bg-pink-300 text-slate-900",
 };
 
 const DAMAGE_CLASS_LABEL: Record<string, string> = {
@@ -195,14 +175,7 @@ export const MovesCard = ({ moves }: MovesCardProps) => {
                         {formatMoveName(move.name)}
                       </td>
                       <td className="px-2 py-1.5">
-                        <span
-                          className={[
-                            "inline-block px-2 py-0.5 border-2 border-[var(--color-gb-ink)] font-pixel text-[0.5rem] uppercase tracking-wide",
-                            TYPE_COLORS[move.type] ?? "bg-[var(--color-gb-screen-light)] text-[var(--color-gb-ink)]",
-                          ].join(" ")}
-                        >
-                          {move.type}
-                        </span>
+                        <TypeChip type={move.type} />
                       </td>
                       <td className="px-2 py-1.5">
                         {DAMAGE_CLASS_LABEL[move.damageClass] ?? move.damageClass}

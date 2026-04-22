@@ -1,4 +1,5 @@
 import { Card } from "@/components/ui/card";
+import { TypeChip } from "@/components/TypeChip";
 import { formatName } from "@/lib/utils";
 
 interface TitleCardProps {
@@ -34,9 +35,9 @@ export const PokemonTitleCard = ({
       <h1 className="font-pixel text-base md:text-lg mt-6 text-center">
         {displayName}
       </h1>
-      <div className="flex space-x-2 p-2">
+      <div className="flex flex-wrap justify-center gap-2 p-2">
         {pokemonTypes.map((type) => (
-          <img key={type} src={type} alt="" className="w-auto" />
+          <TypeChip key={type} type={type} size="md" />
         ))}
       </div>
     </Card>

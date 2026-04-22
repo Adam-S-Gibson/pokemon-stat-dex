@@ -17,8 +17,6 @@ import {
 import { PokemonContext } from "@/Providers/PokemonProvider";
 
 const PLACEHOLDER_IMAGE = "https://placehold.co/400";
-const typeIconUrl = (name: string) =>
-  `https://serebii.net/pokedex-bw/type/${name}.gif`;
 
 const extractSpriteGenerations = (
   sprites: RawSprites | undefined,
@@ -83,9 +81,7 @@ export const ContentArea = () => {
     };
   }, [currentPokemon, setMax]);
 
-  const typeIcons = pokemon?.pokemonTypes.map((t) =>
-    typeIconUrl(t.pokemonType.name),
-  );
+  const typeNames = pokemon?.pokemonTypes.map((t) => t.pokemonType.name);
 
   return (
     <div className="w-full max-w-5xl">
@@ -94,7 +90,7 @@ export const ContentArea = () => {
           <PokemonTitleCard
             imageSrc={pokemon?.officialArtwork ?? PLACEHOLDER_IMAGE}
             pokemonName={pokemon?.name}
-            pokemonTypes={typeIcons}
+            pokemonTypes={typeNames}
           />
         </div>
         <div className="md:w-1/2 md:p-2">
