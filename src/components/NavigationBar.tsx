@@ -3,8 +3,7 @@ import { useNavigate, useParams } from "react-router";
 import { PokemonContext } from "@/Providers/PokemonProvider";
 import { SearchBar } from "@/components/SearchBar";
 
-const POKEBALL_LOGO =
-  "https://upload.wikimedia.org/wikipedia/commons/5/53/Pok%C3%A9_Ball_icon.svg";
+const POKEBALL_LOGO = `${import.meta.env.BASE_URL}pokeball.svg`;
 
 export const NavigationBar = () => {
   const { max } = useContext(PokemonContext);
