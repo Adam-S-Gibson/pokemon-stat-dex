@@ -1,7 +1,6 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router";
 import { PokemonContext } from "@/Providers/PokemonProvider";
-import { Button } from "@/components/ui/button";
 import {
   Command,
   CommandEmpty,
@@ -10,11 +9,6 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
 import { fetchGraphQL, POKEMON_LIST_QUERY } from "@/lib/pokeapi";
 import { formatName } from "@/lib/utils";
 
@@ -29,9 +23,11 @@ interface PokemonListResponse {
 
 export const SearchBar = () => {
   const [open, setOpen] = useState(false);
+  const [query, setQuery] = useState("");
   const [entries, setEntries] = useState<PokemonEntry[]>([]);
   const { max } = useContext(PokemonContext);
   const navigate = useNavigate();
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -51,26 +47,36 @@ export const SearchBar = () => {
     };
   }, [max]);
 
+  useEffect(() => {
+    if (!open) return;
+    const onDocClick = (e: MouseEvent) => {
+      if (!containerRef.current?.contains(e.target as Node)) setOpen(false);
+    };
+    document.addEventListener("mousedown", onDocClick);
+    return () => document.removeEventListener("mousedown", onDocClick);
+  }, [open]);
+
   return (
-    <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>
-        <Button
-          variant="outline"
-          role="combobox"
-          aria-expanded={open}
-          className="w-full cursor-pointer"
-        >
-          Select Pokemon...
-        </Button>
-      </PopoverTrigger>
-      <PopoverContent
-        className="w-(--radix-popover-trigger-width) sm:w-96 p-0"
-        onOpenAutoFocus={(e) => e.preventDefault()}
+    <div ref={containerRef} className="relative w-full">
+      <Command
+        shouldFilter
+        className="pixel-panel-flat overflow-visible bg-(--color-gb-off) [&_[cmdk-input-wrapper]]:border-b-0"
       >
-        <Command>
-          <CommandInput placeholder="Search Pokemon..." />
-          <CommandList>
-            <CommandEmpty>No pokemon found.</CommandEmpty>
+        <CommandInput
+          placeholder="Select Pokemon..."
+          value={query}
+          onValueChange={setQuery}
+          onFocus={() => setOpen(true)}
+          onKeyDown={(e) => {
+            if (e.key === "Escape") setOpen(false);
+          }}
+          className="text-lg text-(--color-gb-ink) placeholder:text-(--color-gb-shadow)"
+        />
+        {open && (
+          <CommandList className="pixel-panel-flat absolute top-full left-0 right-0 z-50 mt-1 max-h-75 bg-(--color-gb-off) shadow-[4px_4px_0_var(--color-gb-ink)]">
+            <CommandEmpty className="py-4 text-center text-(--color-gb-shadow)">
+              No pokemon found.
+            </CommandEmpty>
             <CommandGroup>
               {entries.map((entry) => (
                 <CommandItem
@@ -78,16 +84,18 @@ export const SearchBar = () => {
                   value={entry.label}
                   onSelect={() => {
                     setOpen(false);
+                    setQuery("");
                     navigate(`/pokemon/${entry.value}`);
                   }}
+                  className="text-base text-(--color-gb-ink) aria-selected:bg-(--color-gb-screen-light)"
                 >
                   {entry.label}
                 </CommandItem>
               ))}
             </CommandGroup>
           </CommandList>
-        </Command>
-      </PopoverContent>
-    </Popover>
+        )}
+      </Command>
+    </div>
   );
 };
