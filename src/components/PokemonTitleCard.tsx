@@ -30,6 +30,9 @@ export const PokemonTitleCard = ({
           alt={displayName}
           className="object-contain w-full h-full p-4"
           src={imageSrc}
+          fetchPriority="high"
+          loading="eager"
+          decoding="async"
         />
       </div>
       <h1 className="font-pixel text-base md:text-lg mt-6 text-center">
