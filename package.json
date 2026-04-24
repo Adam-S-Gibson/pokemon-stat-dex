@@ -9,7 +9,7 @@
     "build": "tsc && vite build",
     "lint": "eslint . --report-unused-disable-directives --max-warnings 0 --fix",
     "preview": "vite preview",
-    "deploy": "gh-pages -d dist"
+    "deploy": "pnpm build && gh-pages -d dist"
   },
   "dependencies": {
     "@radix-ui/react-popover": "^1.1.15",
