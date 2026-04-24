@@ -1,7 +1,14 @@
-import { SVGProps, useContext } from "react";
+import { lazy, Suspense, SVGProps, useContext } from "react";
 import { useNavigate, useParams } from "react-router";
 import { PokemonContext } from "@/Providers/PokemonProvider";
-import { SearchBar } from "@/components/SearchBar";
+
+const SearchBar = lazy(() =>
+  import("@/components/SearchBar").then((m) => ({ default: m.SearchBar })),
+);
+
+const SearchBarFallback = () => (
+  <div className="pixel-panel-flat h-[44px] w-full bg-(--color-gb-off)" />
+);
 
 const POKEBALL_LOGO = `${import.meta.env.BASE_URL}pokeball.svg`;
 
@@ -29,7 +36,9 @@ export const NavigationBar = () => {
           onClick={() => navigate(`/pokemon/${currentPokemon - 1}`)}
         />
         <div className="flex-1 min-w-0">
-          <SearchBar />
+          <Suspense fallback={<SearchBarFallback />}>
+            <SearchBar />
+          </Suspense>
         </div>
         <NavButton
           direction="right"
