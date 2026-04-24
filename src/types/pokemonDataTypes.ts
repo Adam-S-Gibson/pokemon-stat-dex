@@ -69,11 +69,22 @@ export interface PokemonForm {
     pokemonStats: PokemonStat[];
     pokemonTypes: PokemonType[];
     pokemonSprite: Array<{ sprites: RawSprites }>;
+  };
+}
+
+export interface PokemonCoreResponse {
+  pokemon: { forms: PokemonForm[] };
+  pokemonCount: { aggregate: { count: number } };
+}
+
+export interface PokemonMovesForm {
+  form_name: string;
+  pokemonInfo: {
+    id: number;
     pokemonMoves: PokemonMove[];
   };
 }
 
-export interface PokemonResponse {
-  pokemon: { forms: PokemonForm[] };
-  pokemonCount: { aggregate: { count: number } };
+export interface PokemonMovesResponse {
+  pokemon: { forms: PokemonMovesForm[] };
 }

@@ -22,7 +22,7 @@ export async function fetchGraphQL<T>(
   return json.data as T;
 }
 
-export const POKEMON_QUERY = `query pokemonById($pokemonId: Int!) {
+export const POKEMON_CORE_QUERY = `query pokemonCoreById($pokemonId: Int!) {
   pokemon: pokemon_v2_pokemonform_aggregate(
     where: { pokemon_v2_pokemon: { pokemon_species_id: { _eq: $pokemonId } } }
   ) {
@@ -40,6 +40,22 @@ export const POKEMON_QUERY = `query pokemonById($pokemonId: Int!) {
           pokemonType: pokemon_v2_type { name }
         }
         pokemonSprite: pokemon_v2_pokemonsprites { sprites }
+      }
+    }
+  }
+  pokemonCount: pokemon_v2_pokemon_aggregate {
+    aggregate { count(columns: pokemon_species_id, distinct: true) }
+  }
+}`;
+
+export const POKEMON_MOVES_QUERY = `query pokemonMovesById($pokemonId: Int!) {
+  pokemon: pokemon_v2_pokemonform_aggregate(
+    where: { pokemon_v2_pokemon: { pokemon_species_id: { _eq: $pokemonId } } }
+  ) {
+    forms: nodes {
+      form_name
+      pokemonInfo: pokemon_v2_pokemon {
+        id
         pokemonMoves: pokemon_v2_pokemonmoves(
           order_by: [{level: asc}, {move_id: asc}]
         ) {
@@ -57,9 +73,6 @@ export const POKEMON_QUERY = `query pokemonById($pokemonId: Int!) {
         }
       }
     }
-  }
-  pokemonCount: pokemon_v2_pokemon_aggregate {
-    aggregate { count(columns: pokemon_species_id, distinct: true) }
   }
 }`;
 

@@ -6,6 +6,7 @@ import { formatName } from "@/lib/utils";
 
 interface MovesCardProps {
   moves: PokemonMove[];
+  loading?: boolean;
 }
 
 interface GroupedMove {
@@ -89,7 +90,7 @@ const DAMAGE_CLASS_LABEL: Record<string, string> = {
   status: "Status",
 };
 
-export const MovesCard = ({ moves }: MovesCardProps) => {
+export const MovesCard = ({ moves, loading = false }: MovesCardProps) => {
   const grouped = useMemo(() => groupMoves(moves), [moves]);
   const methods = useMemo(() => {
     const present = Object.keys(grouped);
@@ -109,7 +110,9 @@ export const MovesCard = ({ moves }: MovesCardProps) => {
         <h2 className="font-pixel text-base md:text-lg">Moves</h2>
       </CardHeader>
       <CardContent>
-        {methods.length === 0 ? (
+        {loading && methods.length === 0 ? (
+          <p className="text-base text-(--color-gb-shadow)">Loading moves…</p>
+        ) : methods.length === 0 ? (
           <p className="text-base">No moves found.</p>
         ) : (
           <>

@@ -5,13 +5,18 @@ import { MovesCard } from "@/components/MovesCard";
 import { PokemonTitleCard } from "@/components/PokemonTitleCard";
 import { SpritesByGenerationCard } from "@/components/SpritesByGenerationCard";
 import { StatsCard } from "@/components/StatsCard";
-import { fetchGraphQL, POKEMON_QUERY } from "@/lib/pokeapi";
+import {
+  fetchGraphQL,
+  POKEMON_CORE_QUERY,
+  POKEMON_MOVES_QUERY,
+} from "@/lib/pokeapi";
 import { parseGenerationKey } from "@/lib/generations";
 import {
   GenerationSprites,
   Pokemon,
   PokemonForm,
-  PokemonResponse,
+  PokemonCoreResponse,
+  PokemonMovesResponse,
   RawSprites,
 } from "@/types/pokemonDataTypes";
 import { PokemonContext } from "@/Providers/PokemonProvider";
@@ -49,7 +54,7 @@ const normalizePokemon = (form: PokemonForm): Pokemon => {
     formName: form_name,
     pokemonStats: pokemonInfo.pokemonStats,
     pokemonTypes: pokemonInfo.pokemonTypes,
-    pokemonMoves: pokemonInfo.pokemonMoves ?? [],
+    pokemonMoves: [],
     officialArtwork: artwork,
     spriteGenerations: extractSpriteGenerations(rawSprites),
   };
@@ -59,27 +64,62 @@ export const ContentArea = () => {
   const { setMax } = useContext(PokemonContext);
   const { id } = useParams<{ id: string }>();
   const currentPokemon = Number(id) || 1;
-  const [pokemon, setPokemon] = useState<Pokemon>();
-  const [altForms, setAltForms] = useState<Pokemon[]>([]);
+  const [core, setCore] = useState<{
+    id: number;
+    pokemon: Pokemon;
+    altForms: Pokemon[];
+  }>();
+  const [moveState, setMoveState] = useState<{
+    id: number;
+    moves: Pokemon["pokemonMoves"];
+  }>();
 
   useEffect(() => {
     let cancelled = false;
-    fetchGraphQL<PokemonResponse>(POKEMON_QUERY, { pokemonId: currentPokemon })
+    fetchGraphQL<PokemonCoreResponse>(POKEMON_CORE_QUERY, {
+      pokemonId: currentPokemon,
+    })
       .then((data) => {
         if (cancelled || data.pokemon.forms.length === 0) return;
         setMax(data.pokemonCount.aggregate.count);
-        setPokemon(normalizePokemon(data.pokemon.forms[0]));
-        setAltForms(
-          data.pokemon.forms
+        setCore({
+          id: currentPokemon,
+          pokemon: normalizePokemon(data.pokemon.forms[0]),
+          altForms: data.pokemon.forms
             .filter((form) => form.form_name !== "")
             .map(normalizePokemon),
-        );
+        });
       })
       .catch(console.error);
     return () => {
       cancelled = true;
     };
   }, [currentPokemon, setMax]);
+
+  useEffect(() => {
+    let cancelled = false;
+    fetchGraphQL<PokemonMovesResponse>(POKEMON_MOVES_QUERY, {
+      pokemonId: currentPokemon,
+    })
+      .then((data) => {
+        if (cancelled) return;
+        const primary = data.pokemon.forms[0];
+        setMoveState({
+          id: currentPokemon,
+          moves: primary?.pokemonInfo.pokemonMoves ?? [],
+        });
+      })
+      .catch(console.error);
+    return () => {
+      cancelled = true;
+    };
+  }, [currentPokemon]);
+
+  const pokemon = core?.id === currentPokemon ? core.pokemon : undefined;
+  const altForms = core?.id === currentPokemon ? core.altForms : [];
+  const movesLoaded = moveState?.id === currentPokemon;
+  const moves = movesLoaded ? moveState!.moves : [];
+  const movesLoading = !movesLoaded;
 
   const typeNames = pokemon?.pokemonTypes.map((t) => t.pokemonType.name);
 
@@ -113,7 +153,7 @@ export const ContentArea = () => {
         />
       </section>
       <section className="mt-4">
-        <MovesCard moves={pokemon?.pokemonMoves ?? []} />
+        <MovesCard moves={moves} loading={movesLoading} />
       </section>
     </div>
   );
