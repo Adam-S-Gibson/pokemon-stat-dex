@@ -27,6 +27,7 @@ export const HomePage = () => {
   const { setMax } = useContext(PokemonContext);
   const [generations, setGenerations] = useState<Generation[]>([]);
   const [selectedGen, setSelectedGen] = useState<number>(1);
+  const [filter, setFilter] = useState("");
 
   useEffect(() => {
     let cancelled = false;
@@ -46,10 +47,14 @@ export const HomePage = () => {
     };
   }, [setMax]);
 
-  const currentSpecies = useMemo(
-    () => generations.find((g) => g.id === selectedGen)?.species ?? [],
-    [generations, selectedGen],
-  );
+  const currentSpecies = useMemo(() => {
+    const all = generations.find((g) => g.id === selectedGen)?.species ?? [];
+    const q = filter.trim().toLowerCase();
+    if (!q) return all;
+    return all.filter(
+      (s) => s.name.includes(q) || String(s.id).padStart(4, "0").includes(q),
+    );
+  }, [generations, selectedGen, filter]);
 
   return (
     <div className="min-h-screen flex flex-col items-center py-8 px-4">
@@ -65,7 +70,7 @@ export const HomePage = () => {
 
       <nav
         aria-label="Generations"
-        className="w-full max-w-6xl flex flex-wrap justify-center gap-3 mb-8"
+        className="w-full max-w-6xl flex flex-wrap justify-center gap-3 mb-4"
       >
         {generations.map((gen) => {
           const isActive = gen.id === selectedGen;
@@ -82,6 +87,26 @@ export const HomePage = () => {
           );
         })}
       </nav>
+
+      <div className="w-full max-w-md mb-8">
+        <label htmlFor="pokemon-filter" className="sr-only">
+          Filter Pokémon
+        </label>
+        <input
+          id="pokemon-filter"
+          type="search"
+          placeholder="Filter Pokémon..."
+          value={filter}
+          onChange={(e) => setFilter(e.target.value)}
+          className="pixel-panel-flat w-full bg-(--color-gb-off) px-3 py-2 text-lg text-(--color-gb-ink) placeholder:text-(--color-gb-shadow) outline-none focus:shadow-[4px_4px_0_var(--color-gb-ink)]"
+        />
+      </div>
+
+      {currentSpecies.length === 0 && filter.trim() !== "" && (
+        <p className="font-pixel text-xs text-(--color-gb-shadow) mb-8">
+          No Pokémon match &quot;{filter}&quot;.
+        </p>
+      )}
 
       <section
         aria-label={`Generation ${selectedGen} Pokémon`}
